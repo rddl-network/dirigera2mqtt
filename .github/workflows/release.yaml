@@ -1,0 +1,30 @@
+---
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag"
+        required: true
+        default: ""
+      prerelease:
+        type: choice
+        description: "Pre-Release?"
+        required: true
+        options:
+          - true
+          - false
+        default: true
+      files:
+        description: "Files"
+        required: true
+        default: "dirigera2mqtt"
+
+jobs:
+  release:
+    uses: rddl-network/github-actions/.github/workflows/release.yaml@main
+    with:
+      tag: ${{ github.event.inputs.tag }}
+      prerelease: ${{ fromJSON(github.event.inputs.prerelease) }}
+      files: ${{ github.event.inputs.files }}
