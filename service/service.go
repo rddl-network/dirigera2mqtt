@@ -14,6 +14,10 @@ type Dirigera2MQTT struct {
 	logger          logger.AppLogger
 	firmwareESP32C6 []byte
 }
+type FirmwareRequest struct {
+	SSID string `json:"ssid"`
+	PWD  string `json:"pwd"`
+}
 
 func NewTrustAnchorAttestationService(cfg *config.Config) *Dirigera2MQTT {
 	service := &Dirigera2MQTT{
@@ -23,7 +27,7 @@ func NewTrustAnchorAttestationService(cfg *config.Config) *Dirigera2MQTT {
 
 	gin.SetMode(gin.ReleaseMode)
 	service.router = gin.New()
-	service.router.GET("/firmware/:mcu/:ssid/:pwd", service.getFirmware)
+	service.router.POST("/firmware/:mcu", service.getFirmware)
 
 	return service
 }
@@ -47,3 +51,17 @@ func (s *Dirigera2MQTT) startWebService() error {
 
 	return err
 }
+
+//func (s *Dirigera2MQTT) getFirmware(c *gin.Context) {
+//	mcu := c.Param("mcu")
+//	var req FirmwareRequest
+//	if err := c.ShouldBindJSON(&req); err != nil {
+//		c.JSON(400, gin.H{"error": "Invalid request body"})
+//		return
+//	}
+//	ssid := req.SSID
+//	pwd := req.PWD
+//	// TODO: Add logic to patch and serve firmware using ssid, pwd, and mcu
+//	c.JSON(200, gin.H{"message": "Firmware request received", "mcu": mcu, "ssid": ssid, "pwd": pwd})
+//}
+//

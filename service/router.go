@@ -13,8 +13,13 @@ func (s *Dirigera2MQTT) GetRouter() *gin.Engine {
 
 func (s *Dirigera2MQTT) getFirmware(c *gin.Context) {
 	mcu := c.Param("mcu")
-	ssid := c.Param("ssid")
-	pwd := c.Param("pwd")
+	var req FirmwareRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request body"})
+		return
+	}
+	ssid := req.SSID
+	pwd := req.PWD
 
 	var filename string
 	var firmwareBytes []byte
