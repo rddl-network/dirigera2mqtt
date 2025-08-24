@@ -7,20 +7,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/planetmint/planetmint-go/app"
-	"github.com/planetmint/planetmint-go/lib"
-	"github.com/rddl-network/dirgera2mqtt/config"
-	"github.com/rddl-network/dirgera2mqtt/service"
+	"github.com/rddl-network/dirigera2mqtt/config"
+	"github.com/rddl-network/dirigera2mqtt/service"
 	"github.com/spf13/viper"
 )
-
-var libConfig *lib.Config
-
-func init() {
-	encodingConfig := app.MakeEncodingConfig()
-	libConfig = lib.GetConfig()
-	libConfig.SetEncodingConfig(encodingConfig)
-}
 
 func loadConfig(path string) (cfg *config.Config, err error) {
 	v := viper.New()

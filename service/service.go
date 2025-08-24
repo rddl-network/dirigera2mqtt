@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rddl-network/dirgera2mqtt/config"
+	"github.com/rddl-network/dirigera2mqtt/config"
 	"github.com/rddl-network/go-utils/logger"
 )
 

@@ -41,14 +41,6 @@ func DefaultConfig() *Config {
 func GetConfig() *Config {
 	initConfig.Do(func() {
 		config = DefaultConfig()
-		config.LogLevel = logger.DEBUG
-	})
-}
-
-// GetConfig returns the config instance for the SDK.
-func GetConfig() *Config {
-	initConfig.Do(func() {
-		config = DefaultConfig()
 	})
 	return config
 }
