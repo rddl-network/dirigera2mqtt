@@ -1,4 +1,6 @@
-# Firmware API Usage
+# dirigera2mqtt 
+
+## API Usage
 
 ### POST /firmware/:mcu
 
@@ -16,4 +18,3 @@ curl -X POST http://localhost:8080/firmware/esp32c6 \
 	-H "Content-Type: application/json" \
 	-d '{"ssid":"yourSSID","pwd":"yourPassword"}'
 ```
-# dirigera2mqtt
