@@ -11,7 +11,7 @@ import (
 func TestFirmwareIntegrityVerification(t *testing.T) {
 	t.Parallel()
 
-	firmware, err := os.ReadFile("../test/energy-intelligence-bridge.bin_merged")
+	firmware, err := os.ReadFile("../test/energy-intelligence-bridge.bin")
 	//firmware := firmware_org[0x20000:]
 	offset := 0x0
 	assert.NoError(t, err)
@@ -27,7 +27,7 @@ func TestFirmwareIntegrityVerification(t *testing.T) {
 func TestFirmwareHandling(t *testing.T) {
 	t.Parallel()
 
-	firmware, err := os.ReadFile("../test/energy-intelligence-bridge.bin_merged")
+	firmware, err := os.ReadFile("../test/energy-intelligence-bridge.bin")
 	//firmware := firmware_org[0x20000:]
 	offset := 0x20000
 	assert.NoError(t, err)

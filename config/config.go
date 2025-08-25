@@ -30,7 +30,7 @@ var (
 // DefaultConfig returns TA's default configuration.
 func DefaultConfig() *Config {
 	return &Config{
-		FirmwareESP32C6: "./tasmota32c6-rddl.bin",
+		FirmwareESP32C6: "./test/energy-intelligence-bridge.bin",
 		ServiceBind:     "localhost",
 		ServicePort:     8080,
 		LogLevel:        logger.DEBUG,

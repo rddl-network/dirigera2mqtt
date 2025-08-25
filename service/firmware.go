@@ -46,6 +46,10 @@ func ValidateHash(binary []byte, chkOffset int) bool {
 }
 
 func VerifyBinaryIntegrity(binary []byte, offset int) bool {
+
+	if len(binary) <= offset+0x17 {
+		return false
+	}
 	binary = binary[offset:]
 	binaryChecksum, offset := xorSegments(binary)
 	chkOffset := getChecksumOffset(offset)
@@ -147,6 +151,9 @@ func xorDataBlob(binary []byte, offset int, length int, is1stSegment bool, check
 
 func xorSegments(binary []byte) (computedChecksum byte, offset int) {
 	// init variables
+	if len(binary) < 2 {
+		return 0, 0
+	}
 	numSegments := int(binary[1])
 	headerSize := 8
 	extHeaderSize := 16
