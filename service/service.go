@@ -27,6 +27,17 @@ func NewTrustAnchorAttestationService(cfg *config.Config) *Dirigera2MQTT {
 
 	gin.SetMode(gin.ReleaseMode)
 	service.router = gin.New()
+	// CORS middleware
+	service.router.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
 	service.router.POST("/firmware/:mcu", service.getFirmware)
 
 	return service
