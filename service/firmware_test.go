@@ -34,7 +34,7 @@ func TestFirmwareHandling(t *testing.T) {
 	valid := service.VerifyBinaryIntegrity(firmware, offset)
 	assert.True(t, valid)
 
-	patchedFirmware := service.PatchFirmware(firmware, "mynetwork", "mypassword", offset)
+	patchedFirmware := service.PatchFirmware(firmware, "mynetwork", "mypassword", "liquid address", "dir token dir", "dir uri", offset)
 	invalid := service.VerifyBinaryIntegrity(patchedFirmware[:], offset)
 	assert.False(t, invalid)
 

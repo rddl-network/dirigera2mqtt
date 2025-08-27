@@ -68,45 +68,42 @@ func VerifyBinaryIntegrity(binary []byte, offset int) bool {
 }
 
 func patchValue(pattern string, value string, firmware []byte) (patchedFirmware []byte) {
-	var searchBytes [64]byte
+	objSize := len(pattern)
+	searchBytes := make([]byte, objSize)
 	copy(searchBytes[:], pattern)
 
-	var replacementBuffer [64]byte
+	replacementBuffer := make([]byte, objSize)
 	copy(replacementBuffer[:], value)
 
 	patchedFirmware = bytes.Replace(firmware, searchBytes[:], replacementBuffer[:], 1)
 	return
 }
 
-func PatchFirmware(firmware []byte, ssid string, pwd string, offset int) []byte {
-	//toBePatchedImageInFirmware := firmware[offset:]
+func PatchFirmware(firmware []byte, ssid string, pwd string, LiquidAddress string, DirAuthToken string, DirURI string, offset int) []byte {
 
-	SSID_PATTERN := "WIFISSIDWIFISSIDWIFISSIDWIFISSIDWIFISSIDWIFISSIDWIFISSIDWIFISSID"
-
-	var searchBytes [64]byte
-	copy(searchBytes[:], SSID_PATTERN)
-
-	var replacementBuffer [64]byte
-	copy(replacementBuffer[:], ssid)
-
-	patchedSSIDImage := bytes.Replace(firmware[offset:], searchBytes[:], replacementBuffer[:], 1)
-	// Write original and patched buffers to files for debugging
-	// Verify if ssid is contained in patchedSSIDImage
-	if !bytes.Contains(patchedSSIDImage, []byte(ssid)) {
-		fmt.Printf("Warning: SSID '%s' not found in patchedSSIDImage\n", ssid)
+	patchedFirmware := firmware[offset:]
+	if ssid != "" {
+		ssidPattern := "WIFI SSID                                                       "
+		patchedFirmware = patchValue(ssidPattern, ssid, patchedFirmware)
+	}
+	if pwd != "" {
+		pwdPattern := "WIFI PASSWORD                                                   "
+		patchedFirmware = patchValue(pwdPattern, pwd, patchedFirmware)
+	}
+	if LiquidAddress != "" {
+		liquidAddrPattern := "LIQUID ADDRESS                                                  "
+		patchedFirmware = patchValue(liquidAddrPattern, LiquidAddress, patchedFirmware)
+	}
+	if DirAuthToken != "" {
+		dirAuthPattern := "DIRIGERA TOKEN                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+		patchedFirmware = patchValue(dirAuthPattern, DirAuthToken, patchedFirmware)
+	}
+	if DirURI != "" {
+		dirURIPattern := "DIRIGERA URI                                                    "
+		patchedFirmware = patchValue(dirURIPattern, DirURI, patchedFirmware)
 	}
 
-	pwdPattern := "WIFIPWDWIFIPWDWIFIPWDWIFIPWDWIFIPWDWIFIPWDWIFIPWDWIFIPWDWIFIPWDW"
-	completlyPatchedImage := patchValue(pwdPattern, pwd, patchedSSIDImage)
-	// Verify if ssid and pwd are contained in completlyPatchedImage
-	if !bytes.Contains(completlyPatchedImage[:], []byte(ssid)) {
-		fmt.Printf("Warning: SSID '%s' not found in completlyPatchedImage\n", ssid)
-	}
-	if !bytes.Contains(completlyPatchedImage[:], []byte(pwd)) {
-		fmt.Printf("Warning: PWD '%s' not found in completlyPatchedImage\n", pwd)
-	}
-
-	copy(firmware[offset:], completlyPatchedImage[:])
+	copy(firmware[offset:], patchedFirmware[:])
 
 	return firmware[:]
 }

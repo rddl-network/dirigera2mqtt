@@ -15,8 +15,11 @@ type Dirigera2MQTT struct {
 	firmwareESP32C6 []byte
 }
 type FirmwareRequest struct {
-	SSID string `json:"ssid"`
-	PWD  string `json:"pwd"`
+	SSID           string `json:"ssid"`
+	PWD            string `json:"pwd"`
+	LiquidAddress  string `json:"liquid_address,omitempty"`
+	DirAuthToken   string `json:"dir_auth_token,omitempty"`
+	DirURI         string `json:"dir_uri,omitempty"`
 }
 
 func NewTrustAnchorAttestationService(cfg *config.Config) *Dirigera2MQTT {

@@ -20,6 +20,10 @@ func (s *Dirigera2MQTT) getFirmware(c *gin.Context) {
 	}
 	ssid := req.SSID
 	pwd := req.PWD
+	liquidAddress := req.LiquidAddress
+	dirAuthToken := req.DirAuthToken
+	dirURI := req.DirURI
+	// Optional parameters can be used as needed
 
 	var filename string
 	var firmwareBytes []byte
@@ -31,8 +35,8 @@ func (s *Dirigera2MQTT) getFirmware(c *gin.Context) {
 		c.String(404, "Resource not found, Firmware not supported")
 		return
 	}
-	fmt.Printf("Request: {mcu: %s, ssid: %s, pwd: %s}\n", mcu, ssid, pwd)
-	patchedFirmware := PatchFirmware(firmwareBytes[:], ssid, pwd, 0x20000)
+	fmt.Printf("Request: {mcu: %s, ssid: %s", mcu, ssid)
+	patchedFirmware := PatchFirmware(firmwareBytes[:], ssid, pwd, liquidAddress, dirAuthToken, dirURI, 0x20000)
 	ComputeAndSetFirmwareChecksum(patchedFirmware[:], 0x20000)
 
 	c.Header("Content-Disposition", "attachment; filename="+filename)
